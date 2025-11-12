@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,8 +26,9 @@ Route::get('/dashboard', function () {
 
 // User
 Route::get('/', function () {
-    return view('user.home');
-})->middleware('auth')->name('home');
+    return view('home');
+})->middleware(['auth'])->name('home');
 
+Route::resource('/products', ProductController::class)->middleware(['auth']);
 
 require __DIR__.'/auth.php';
