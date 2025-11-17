@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,5 +32,7 @@ Route::get('/', function () {
 })->middleware(['auth'])->name('home');
 
 Route::resource('/products', ProductController::class)->middleware(['auth']);
+
+Route::resource('/category', CategoryController::class);
 
 require __DIR__.'/auth.php';
