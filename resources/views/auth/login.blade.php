@@ -30,5 +30,11 @@
         {{ __('Log in') }}
       </x-primary-button>
     </div>
+
+    <div class="text-center mt-3">
+    <a href="{{ route('register') }}" class="btn btn-light w-100">
+        <i class="bx bx-user-plus"></i> Register
+    </a>
+    </div>
   </form>
 </x-layouts.guest>

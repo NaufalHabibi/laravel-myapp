@@ -28,7 +28,7 @@
                         <div class="app-brand justify-content-center mb-3">
                             <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
                         </div>
-                        @yield('content')
+                        {{ $slot }}
                     </div>
                 </div>
             </div>

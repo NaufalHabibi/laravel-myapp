@@ -7,11 +7,20 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
-    {
-        $categories = Category::orderBy('id', 'DESC')->paginate(10);
-        return view('category.index', compact('categories'));
-    }
+    public function index(Request $request)
+{
+    $categories = Category::when($request->search, function($query) use ($request) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        })
+        ->orderBy('id', 'DESC')
+        ->paginate(10);
+
+    // Agar pagination tidak hilangkan search
+    $categories->appends($request->all());
+
+    return view('category.index', compact('categories'));
+}
+
 
     public function create()
     {

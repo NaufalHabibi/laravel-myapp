@@ -23,12 +23,5 @@
         <div>Produk</div>
       </a>
     </li>
-
-    <li class="menu-item">
-    <a href="{{ route('category.index') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-category"></i>
-        <div>Kategori</div>
-    </a>
-    </li>
   </ul>
 </aside>
