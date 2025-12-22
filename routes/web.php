@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,25 +18,26 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/register', [RegisteredUserController::class, 'store']);
 
-    // Login (breeze)
+    // Login
     Route::get('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])
         ->name('login');
 });
 
-// AUTH BREEZE ROUTES (JANGAN DI DALAM GUEST!)
+// Auth default (Breeze)
 require __DIR__ . '/auth.php';
 
 
 /*
 |--------------------------------------------------------------------------
-| User Routes (Setelah Login)
+| User Routes (SETELAH LOGIN) - TUGAS 9
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
 
-    // Home user
+    // LANDING PAGE / DASHBOARD USER (Blade Templating)
     Route::get('/', function () {
-        return view('home');
+        $products = Product::latest()->take(8)->get();
+        return view('user.home', compact('products'));
     })->name('home');
 
     // Profile
@@ -43,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Products & Category CRUD
+    // CRUD
     Route::resource('/products', ProductController::class);
     Route::resource('/category', CategoryController::class);
 });
@@ -51,7 +53,7 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Admin Routes (TIDAK DIUBAH)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin'])->group(function () {
