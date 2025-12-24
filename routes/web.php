@@ -6,44 +6,49 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
-| LANDING PAGE USER (LOGIN REQUIRED)
+| USER ROUTES (LOGIN REQUIRED)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
 
-    // Home / Landing Page User
+    // LANDING PAGE USER
     Route::get('/', function () {
         $products = Product::latest()->take(8)->get();
         return view('user.home', compact('products'));
     })->name('home');
 
-    // Profile
+    // PROFILE
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Produk & Kategori
+    // PRODUK & KATEGORI
     Route::resource('/products', ProductController::class);
     Route::resource('/category', CategoryController::class);
 
-    // Keranjang
+    // CART (KERANJANG)
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
 
-    // Checkout
+    // CHECKOUT (PAYMENT)
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+
+    // RIWAYAT PESANAN USER (WAJIB MODUL)
+    Route::get('/orders/history', [OrderController::class, 'history'])
+        ->name('orders.history');
 });
 
 /*
 |--------------------------------------------------------------------------
-| DASHBOARD ADMIN (ROLE ADMIN ONLY)
+| ADMIN ROUTES (ROLE ADMIN ONLY)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin'])->group(function () {
